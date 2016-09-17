@@ -1,0 +1,32 @@
+{
+  "name": "purescript-signature-pad-halogen",
+  "license": "MIT",
+  "authors": [
+    "narinari <narinari.t@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/narinari/purescript-signature-pad-halogen.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output",
+    "test",
+    "bower.json",
+    "package.json"
+  ],
+  "dependencies": {
+    "purescript-console": "^1.0.0",
+    "purescript-signature-pad": "^0.2.0",
+    "purescript-halogen": "^0.11.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^1.0.0"
+  },
+  "resolutions": {
+    "purescript-dom": "^2.0.0",
+    "purescript-js-date": "^2.0.0"
+  }
+}
