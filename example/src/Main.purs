@@ -48,38 +48,38 @@ ui = H.parentComponent { render, eval, peek: Nothing }
   render :: State -> MainHTML MainAff
   render state =
     HH.div_
-      [ HH.div_
-        [ HH.slot slotA
-            \_ -> { component: SignaturePad.component
-                  , initialState: SignaturePad.initialState
-                      { config = padConfig }
-                  }
-        , HH.button
-          [ HP.buttonType HP.ButtonButton
-          , HE.onClick $ HE.input_ $ SigClear slotA
-          ]
-          [ HH.text "Clear" ]
-        , HH.button
-          [ HP.buttonType HP.ButtonButton
-          , HE.onClick $ HE.input_ $ SigCapture slotA
-          ]
-          [ HH.text "Capture" ]
-        , HH.img
-          [ HP.src $ maybe "" id state.sig1Data ]
+    [ HH.div_
+      [ HH.slot slotA
+          \_ -> { component: SignaturePad.component
+                , initialState: SignaturePad.initialState
+                    { config = padConfig }
+                }
+      , HH.button
+        [ HP.buttonType HP.ButtonButton
+        , HE.onClick $ HE.input_ $ SigClear slotA
         ]
-      , HH.div_
-        [ HH.slot slotB
-            \_ -> { component: SignaturePad.component
-                  , initialState: SignaturePad.initialState
-                      { config = padConfig }
-                  }
-        , HH.button
-          [ HP.buttonType HP.ButtonButton
-          , HE.onClick $ HE.input_ $ SigClear slotB
-          ]
-          [ HH.text "Clear" ]
+        [ HH.text "Clear" ]
+      , HH.button
+        [ HP.buttonType HP.ButtonButton
+        , HE.onClick $ HE.input_ $ SigCapture slotA
         ]
+        [ HH.text "Capture" ]
+      , HH.img
+        [ HP.src $ maybe "" id state.sig1Data ]
       ]
+    , HH.div_
+      [ HH.slot slotB
+          \_ -> { component: SignaturePad.component
+                , initialState: SignaturePad.initialState
+                    { config = padConfig { height = 300.0, width = 500.0 }}
+                }
+      , HH.button
+        [ HP.buttonType HP.ButtonButton
+        , HE.onClick $ HE.input_ $ SigClear slotB
+        ]
+        [ HH.text "Clear" ]
+      ]
+    ]
 
   slotA = SignaturePadSlot "A"
   slotB = SignaturePadSlot "B"
