@@ -4,6 +4,7 @@ import Halogen as H
 import Halogen.HTML.Indexed as HH
 import Halogen.HTML.Properties.Indexed as HP
 import Control.Monad.Aff (Aff)
+import Control.Monad.Except (runExcept)
 import DOM (DOM)
 import DOM.HTML.Types (HTMLCanvasElement)
 import Data.Either (either)
@@ -53,7 +54,7 @@ component = H.lifecycleComponent
   render :: State -> H.ComponentHTML Query
   render _ =
     HH.canvas
-    [ HP.ref (\elm -> H.action $ SetElement $ (either (const Nothing ) pure <<< read <<< toForeign) =<< elm) ]
+    [ HP.ref (\elm -> H.action $ SetElement $ (either (const Nothing ) pure <<< runExcept <<< read <<< toForeign) =<< elm) ]
 
   eval :: Query ~> H.ComponentDSL State Query (Aff (SignaturePadEffects eff))
   eval (SetElement elm next) = H.modify (_ { element = elm}) $> next
