@@ -3,7 +3,8 @@ module Graphics.SignaturePad.Halogen.Component where
 import Halogen as H
 import Halogen.HTML.Indexed as HH
 import Halogen.HTML.Properties.Indexed as HP
-import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff.Free (class Affable)
 import Control.Monad.Except (runExcept)
 import DOM (DOM)
 import DOM.HTML.Types (HTMLCanvasElement)
@@ -42,8 +43,11 @@ initialState =
   }
 
 component
-  :: forall eff
-  .  H.Component State Query (Aff (SignaturePadEffects eff))
+  :: forall m eff
+  . ( MonadAff (SignaturePadEffects eff) m
+    , Affable (SignaturePadEffects eff) m
+    )
+  => H.Component State Query m
 component = H.lifecycleComponent
   { render
   , eval
@@ -56,7 +60,7 @@ component = H.lifecycleComponent
     HH.canvas
     [ HP.ref (\elm -> H.action $ SetElement $ (either (const Nothing ) pure <<< runExcept <<< read <<< toForeign) =<< elm) ]
 
-  eval :: Query ~> H.ComponentDSL State Query (Aff (SignaturePadEffects eff))
+  eval :: Query ~> H.ComponentDSL State Query m
   eval (SetElement elm next) = H.modify (_ { element = elm}) $> next
   eval (Init next) = do
     elm <- H.gets _.element
